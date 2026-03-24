@@ -1,0 +1,156 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/Pioneer3at.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/CementTiles.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Asphalt.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.11641429536506533 0.1796855913964113 0.9768115478838163 1.0604895687678288
+  position -21.351476671406793 -33.751820563522415 11.90826166791171
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Solid {
+  children [
+    Shape {
+      appearance Asphalt {
+      }
+      geometry Box {
+        size 30 30 0.1
+      }
+    }
+  ]
+  name "Flat"
+  boundingObject Box {
+    size 30 30 0.1
+  }
+  locked TRUE
+}
+Solid {
+  translation -6 8 0.55
+  children [
+    Shape {
+      appearance CementTiles {
+      }
+      geometry Cylinder {
+        height 1
+        radius 0.5
+      }
+    }
+  ]
+}
+Solid {
+  translation 3 0 0.3
+  children [
+    Shape {
+      appearance CementTiles {
+      }
+      geometry Box {
+        size 0.5 0.5 0.5
+      }
+    }
+  ]
+  name "Cube1"
+  locked TRUE
+}
+Solid {
+  translation 0 14 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.211765 0.211765 0.211765
+        }
+      }
+      geometry Box {
+        size 20 0.2 2
+      }
+    }
+  ]
+  name "Wall1"
+  boundingObject Box {
+    size 20 0.2 2
+  }
+  locked TRUE
+}
+Solid {
+  translation 0 -14 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.211765 0.211765 0.211765
+        }
+      }
+      geometry Box {
+        size 20 0.2 2
+      }
+    }
+  ]
+  name "Wall3"
+  boundingObject Box {
+    size 20 0.2 2
+  }
+  locked TRUE
+}
+Solid {
+  translation 14 0 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.211765 0.211765 0.211765
+        }
+      }
+      geometry Box {
+        size 0.2 28 2
+      }
+    }
+  ]
+  name "Wall2"
+  boundingObject Box {
+    size 0.2 28 2
+  }
+  locked TRUE
+}
+Solid {
+  translation -14 0 1
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.211765 0.211765 0.211765
+        }
+      }
+      geometry Box {
+        size 0.2 28 2
+      }
+    }
+  ]
+  name "Wall4"
+  boundingObject Box {
+    size 0.2 28 2
+  }
+  locked TRUE
+}
+DEF Pioneer3AT Pioneer3at {
+  translation 0 0 0.05
+  controller "rl_scout"
+  supervisor TRUE
+  extensionSlot [
+    Lidar {
+      translation 0.15 0 0.25
+      locked TRUE
+      horizontalResolution 720
+      fieldOfView 3.14
+      numberOfLayers 1
+      maxRange 10
+    }
+  ]
+}

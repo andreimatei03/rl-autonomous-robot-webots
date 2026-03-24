@@ -1,0 +1,21 @@
+# Medii virtuale Python (Asta a cauzat eroarea!)
+rl_env/
+venv/
+env/
+
+# Fisiere si foldere cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Modele antrenate (fisierele grele)
+# Le ignoram pe toate pentru a nu bloca GitHub-ul
+*.pth
+# Daca pe viitor vei dori sa urci un singur model de referinta, poti decomenta (sterge #) linia de mai jos:
+# !dqn_model_best.pth
+
+# Fisiere de sistem si setari editoare cod
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
