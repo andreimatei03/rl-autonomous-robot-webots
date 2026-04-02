@@ -71,7 +71,7 @@ if os.path.exists(model_path):
 # ===============================
 
 num_episodes = 1000
-max_steps = 400
+max_steps = 1200
 
 # Monitoring
 episode_rewards = deque(maxlen=50)

@@ -33,8 +33,8 @@ PROTO Pioneer3at [
         children [
           DEF BODY_SHAPE Shape {
             appearance PBRAppearance {
-              baseColor 0 0 1
-              metalness 0
+              baseColor 0.7 0.7 0.7
+              metalness 0.5
               baseColorMap ImageTexture {
                 url [
                   "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/textures/body_3at_base_color.jpg"

@@ -40,9 +40,9 @@ class ScoutEnv:
 
         self.prev_distance = 0.0
         self.step_count = 0
-        self.max_steps = 300
+        self.max_steps = 1200
 
-        self.state_dim = 7  # front, left, right, front_left, front_right, distance, angle
+        self.state_dim = 9  # front, left, right, front_left, front_right, distance, angle
         self.action_dim = 5
 
     # -----------------------------
@@ -73,8 +73,8 @@ class ScoutEnv:
         self.step_count = 0
 
         # Goal random
-        self.goal_x = random.uniform(-8, 8)
-        self.goal_y = random.uniform(-8, 8)
+        self.goal_x = random.uniform(-13, 13)
+        self.goal_y = random.uniform(-13, 13)
 
         self.prev_distance = math.sqrt(
             self.goal_x ** 2 + self.goal_y ** 2
@@ -203,8 +203,11 @@ class ScoutEnv:
         angle = math.atan2(math.sin(angle), math.cos(angle))
 
         # Normalizare obiectiv
-        distance_norm = min(distance, 15.0) / 15.0
+        distance_norm = min(distance, 40.0) / 40.0
         angle_norm = angle / math.pi
+
+        v_norm = self.v / 2.0
+        w_norm = self.w / 4.0
 
         return [
             front,
@@ -213,15 +216,16 @@ class ScoutEnv:
             front_left,
             front_right,
             distance_norm,
-            angle_norm
+            angle_norm,
+            v_norm,  # <--- Trebuie să adaugi această linie
+            w_norm   # <--- Trebuie să adaugi această linie
         ]
 
     # -----------------------------
 
     def _compute_reward(self, state):
-
-        front, left, right, front_left, front_right, distance_norm, angle_norm = state
-
+        front, left, right, front_left, front_right, distance_norm, angle_norm, v_norm, w_norm = state
+        
         reward = 0.0
 
         # 1. STRONG progress reward (PRIMARY incentive)
@@ -230,38 +234,39 @@ class ScoutEnv:
             (self.goal_y - self.y) ** 2
         )
         progress = self.prev_distance - distance
-        reward += progress * 50.0  # BOOSTED: 20 → 50 (STRONG incentive)
+        reward += progress * 20.0 #Q-values stability
 
         # 2. Orientation reward (secondary)
         if abs(angle_norm) < 0.15:
             reward += 1.0  # BOOSTED: 0.5 → 1.0
         reward -= abs(angle_norm) * 0.02  # Softer penalty
 
-        # 3. Safe movement bonus (NEW - encourage exploration without crashes)
+        # 3. Safe movement bonus (scăzut de la 3 metri la 1.5 metri)
         min_dist = min(front, left, right, front_left, front_right)
-        if min_dist > 0.3:
-            reward += 0.2  # Bonus for staying safe, exploring
+        if min_dist > 0.15: # 0.15 * 10m = 1.5 metri
+            reward += 0.2  
         
-        # 4. Obstacle approaching warnings (SOFTER penalties)
-        if front < 0.25:
-            reward -= 1.0  # REDUCED: 3 → 1
-        if front < 0.15:
-            reward -= 2.0  # REDUCED: 5 → 2
+        # 4. Obstacle approaching warnings (distanțe mult mai mici)
+        if front < 0.10:    # 1.0 metri (înainte era 2.5m)
+            reward -= 1.0  
+        if front < 0.05:    # 0.5 metri (înainte era 1.5m)
+            reward -= 2.0  
         
-        if (left < 0.25 or right < 0.25 or 
-            front_left < 0.25 or front_right < 0.25):
-            reward -= 0.1  # REDUCED: 0.3 → 0.1
+        # Penalizare laterală ajustată la 0.5 metri
+        if (left < 0.05 or right < 0.05 or 
+            front_left < 0.05 or front_right < 0.05):
+            reward -= 0.1
         
         # 5. Minimal living cost
         reward -= 0.0005  # REDUCED: 0.001 → 0.0005 (even softer)
         reward -= abs(self.w) * 0.002  # REDUCED: 0.005 → 0.002
 
-        # 6. COLLISION (SOFT, not binary fail)
-        if min_dist < 0.08:
-            return -20.0, True  # REDUCED: -50 → -20 (recoverable)
+        # 6. COLLISION (Permite-i să se apropie la 25 de centimetri)
+        if min_dist < 0.025: # 0.025 * 10m = 25 centimetri de perete
+            return -20.0, True
 
         # 7. GOAL reached (STRONG reward)
-        if distance < 0.3:
+        if distance < 1:
             return 200.0, True  # BOOSTED: 150 → 200 (strong success signal)
 
         self.prev_distance = distance

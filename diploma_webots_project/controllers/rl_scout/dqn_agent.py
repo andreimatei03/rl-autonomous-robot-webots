@@ -16,13 +16,9 @@ class QNetwork(nn.Module):
         # Shared feature extraction
         self.shared = nn.Sequential(
             nn.Linear(state_dim, 128),
-            nn.BatchNorm1d(128),
             nn.ReLU(),
-            nn.Dropout(0.2),
             nn.Linear(128, 128),
-            nn.BatchNorm1d(128),
             nn.ReLU(),
-            nn.Dropout(0.2)
         )
 
         # Value stream

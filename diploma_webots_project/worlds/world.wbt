@@ -9,7 +9,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.11641429536506533 0.1796855913964113 0.9768115478838163 1.0604895687678288
+  orientation -0.15097789171185974 0.2594050613127872 0.9538944859781668 1.0116934990544617
   position -21.351476671406793 -33.751820563522415 11.90826166791171
 }
 TexturedBackground {
@@ -30,6 +30,40 @@ Solid {
   boundingObject Box {
     size 30 30 0.1
   }
+  locked TRUE
+}
+Solid {
+  translation 6 6 0.55
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.333333 0.333333 0.333333
+        }
+      }
+      geometry Box {
+        size 3 1.5 1
+      }
+    }
+  ]
+  name "Block"
+}
+Solid {
+  translation 7 -7 0.55
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 0
+        }
+      }
+      geometry Cone {
+        bottomRadius 0.5
+        height 1
+      }
+    }
+  ]
+  name "Cone"
   locked TRUE
 }
 Solid {
@@ -69,7 +103,7 @@ Solid {
         }
       }
       geometry Box {
-        size 20 0.2 2
+        size 28 0.2 2
       }
     }
   ]
@@ -89,7 +123,7 @@ Solid {
         }
       }
       geometry Box {
-        size 20 0.2 2
+        size 28 0.2 2
       }
     }
   ]
